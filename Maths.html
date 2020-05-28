@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>matrix</title>
+    <meta name="theme-color" content="#007ACC">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style type="text/css">
+
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial,sans-serif
+    }
+
+    /*-----------------------------( edit of the page )-----------------------------*/
+    html,
+    body {
+      background-color: #eeeeee;
+      overflow: hidden
+    }
+
+    /*----------------------------------( position )---------------------------------*/
+    .absolute {position:absolute}
+    .fixed {position:fixed}
+
+    /*---------------------------------( center )----------------------------*/
+    .center {
+      -webkit-transform:translate( -50%, -50% );
+      -moz-transform: translate( -50%, -50% );
+      transform: translate( -50%, -50% );
+      top: 50%;
+      left: 50%
+    }
+
+    .mark-maths:after,
+    .center-left,
+    .center-right {
+      -webkit-transform: translateX( -50% );
+      -moz-transform: translateX( -50% );
+      transform:translateX( -50% );
+      left: 50%
+    }
+
+    .center-top,
+    .center-bottom {
+      -webkit-transform: translateY( -50% );
+      -moz-transform: translateY( -50% );
+      transform: translateY( -50% );
+      top: 50%
+    }
+
+    /*--------------------------------------( full )-----------------------------*/
+    .full {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0
+    }
+
+    .full-left,
+    .full-right {
+      width: 100%;
+      left: 0
+    }
+
+    .full-top,
+    .full-bottom {
+      height: 100%;
+      top: 0
+    }
+
+    /*-------------------------------------------( shadow )----------------------------------*/
+    .shadow {
+      -webkit-box-shadow: 0 2px 2px #cccccc;
+      -moz-box-shadow: 0 2px 2px #cccccc;
+      box-shadow:0 2px 2px #cccccc
+    }
+
+    /*----------------------------------( mouse )-------------------------------*/
+    .pointer {cursor:pointer}
+    .cell {cursor:cell}
+    .help {cursor:help}
+
+    /*--------------------------------------( factory )---------------------------------*/
+    .factory-array {
+      background-color: white
+    }
+
+    .factory-array {
+      width: 100%
+    }
+
+    @media (max-width: 400px) {
+      .place-array {
+        width: 100%
+      }
+    }
+
+    @media (min-width: 400px) and (max-width: 500px) {
+      .place-array {
+        width: 100%
+      }
+    }
+
+    @media (min-width: 500px) and (max-width: 800px) {
+      .place-array {
+        width: 480px
+      }
+      .all-edit {
+        border-radius: 0 0 4px 4px
+      }
+    }
+
+    @media (min-width: 800px) {
+      .place-array {
+        width: 540px
+      }
+      .factory-array {
+        width: 600px
+      }
+      .all-edit {
+        border-radius: 0 0 4px 4px
+      }
+    }
+
+    /*-------------------------------------( height )-------------------------------------*/
+    @media (max-height: 500px) {
+      .factory-array {
+        height: 180px
+      }
+      .place-array {
+        top: 280px;
+        height: 200px
+      }
+    }
+
+    @media (min-height: 500px) and (max-height: 600px) {
+      .factory-array {
+        height: 190px
+      }
+      .place-array {
+        top: 300px;
+        height: 220px
+      }
+    }
+
+    @media (min-height: 600px) and (max-height: 900px) {
+      .factory-array {
+        height: 200px
+      }
+      .place-array {
+        top: 350px;
+        height: 260px
+      }
+    }
+
+    @media (min-height: 900px) {
+      .factory-array {
+        height: 210px
+      }
+      .place-array {
+        top: 400px;
+        height: 300px
+      }
+    }
+
+    /*-----------------------------------------( button of marks )-----------------------------------*/
+    .button-operation {
+      bottom: 20px;
+      width: 200px;
+      height: 40px
+    }
+
+    .button-plus {
+      background-color: #007ACC;
+      border: none;
+      color: white
+    }
+
+    .all-edit {
+      height: 46px;
+      bottom: -47px;
+      background-color: white;
+      -webkit-box-shadow: 0 2px 1px #cccccc;
+      -moz-box-shadow: 0 2x 1px #cccccc;
+      box-shadow: 0 2px 1px #cccccc
+    }
+
+    .button-random {
+      width: 36px;
+      left: 20%;
+      color: #007ACC
+    }
+
+    .button-create {
+      width: 36px;
+      right: 20%;
+      color: #009393
+    }
+
+    .button-edit > div > input {
+      width: 40px;
+      border: none;
+      outline: none;
+      background-color: transparent !important;
+      color: orchid;
+      font-size: 25px;
+      font-weight: 600
+    }
+
+    .button-operation > input {
+      width: 48%;
+      outline: none
+    }
+
+    .button-plus,
+    .button-toggle {
+      font-weight: 600;
+      font-size: 18px;
+      -webkit-transition: all .2s;
+      -moz-transition: all .2s;
+      transition: all .2s
+    }
+
+    .button-toggle {
+      background-color: #ffffff;
+      border: 1px solid #007ACC;
+      color: #007ACC
+    }
+
+    .select-operation:active {
+      -webkit-box-shadow: 0 6px 4px #cccccc;
+      -moz-box-shadow: 0 6px 4px #cccccc;
+      box-shadow: 0 6px 4px #cccccc
+    }
+
+    .button-plus:active,
+    .button-toggle:active {
+      -webkit-box-shadow: 0 6px 4px #cccccc;
+      -moz-box-shadow: 0 6px 4px #cccccc;
+      box-shadow: 0 6px 4px #cccccc
+    }
+
+    .place-result {
+      background-color: white;
+      -webkit-transition: all .4s;
+      -moz-transition: all .4s;
+      transition: all .4s
+    }
+
+    .main-place-result {
+      background-color: #007ACC;
+      -webkit-box-shadow: 0 1px 1px #cccccc;
+      -moz-box-shadow: 0 1px 1px #cccccc;
+      box-shadow: 0 1px 1px #cccccc;
+      height: 50px
+    }
+
+    .mark-maths {
+      width: 120px;
+      height: 38px;
+      border-radius: 40px;
+      bottom: -30px;
+      background-color: white;
+      z-index: 8888888
+    }
+
+    .mark-maths:after {
+      content: "";
+      top: -19px;
+      position: absolute;
+      border: 10px solid transparent;
+      border-bottom-color: #ffffff
+    }
+
+    .mark-maths > div {
+      width: 30px;
+      height: 30px;
+      background-color: #00BCE4;
+      -webkit-transition: all .2s;
+      -moz-transition: all .2s;
+      transition: all .2s;
+      border-radius: 50%
+    }
+
+    .mark-maths > div:active {
+      width: 35px;
+      height: 35px
+    }
+
+    .mark-maths > div > a {
+      color: white;
+      font-weight: 500;
+      text-decoration: none
+    }
+
+    .opera__1 {left:5px}
+    .opera__3 {right:5px}
+
+    .select-operation {
+      width: 38px;
+      height: 38px;
+      background-color: white;
+      border: none;
+      -webkit-box-shadow: 0 1px 2px #cccccc;
+      -moz-box-shadow: 0 1px 2px #cccccc;
+      box-shadow: 0 1px 2px #cccccc;
+      -webkit-transition: all .2s;
+      -moz-transition: all .2s;
+      transition: all .2s;
+      border-radius: 50%;
+      z-index: 99999999
+    }
+
+    .select-operation > a {
+      font-size: 20px;
+      font-weight: 600;
+      color: #cccccc;
+      text-decoration: none
+    }
+
+    .array1 > div,
+    .array2 > div {
+      width: 30px;
+      height: 30px
+    }
+
+    .toggle-system,
+    .check-console {
+      -webkit-transition: all .1s;
+      -moz-transition: all .1s;
+      transition: all .1s
+    }
+
+    .button-edit {
+      width: 250px;
+      height: 36px;
+      bottom: 5px
+    }
+
+    .enter-result {
+      bottom: 60px
+    }
+
+    .array-main-1,
+    .array-main-2 {
+      width: 49%;
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      transition: all .3s
+    }
+
+    .array1 > input,
+    .array2 > input {
+      width: 28px;
+      height: 42px;
+      margin: 2px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #555555;
+      border: 1px solid transparent;
+      border-bottom-color: orange;
+      padding: 7px
+    }
+
+    .array1,
+    .array2,
+    .bakground-light {
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      transition: all .3s
+    }
+
+    .array1 > input:hover,
+    .array2 > input:hover {
+      outline: 1px solid orange
+    }
+
+    .range1 {
+      top: 10px;
+      width: 200px
+    }
+
+    .r3 {border-radius:3px}
+
+    .factory-arrays {
+      top: 115px;
+      padding: 0 10px 20px 10px;
+      border: 2px solid transparent;
+      border-radius: 30px;
+      border-left-color: orange;
+      border-right-color: orange;
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      transition: all .3s
+    }
+
+    .factory-arrays > input {
+      width: 48px;
+      height: 36px;
+      border-radius: 7px;
+      padding: 10px;
+      color: #333333;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 4px;
+      outline: none;
+      border: 1px solid transparent;
+      border-bottom-color: #D3AB4C
+    }
+
+    .range2 {
+      -webkit-transform: rotate( -90deg );
+      -moz-transform: rotate( -90deg );
+      transform: rotate( -90deg );
+      right: -10px;
+      top: 90px;
+      width: 140px
+    }
+
+    /*---------------------------- edit of array one and two -----------------------------------*/
+    .some-edit-array {
+      height: 30px;
+      top: -30px
+    }
+
+    .array___1,
+    .array___2 {width: 40%}
+
+    .array___1 {right:5%}
+    .array___2 {left:5%}
+
+    .array___1 > div,
+    .array___2 > div {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: white
+    }
+
+    .array___1 > div > a,
+    .array___2 > div > a {
+      color: #666666;
+      font-weight: 700;
+      -webkit-text-shadow: 0 2px 1px #cccccc;
+      -moz-text-shadow: 0 2px 1px #cccccc;
+      text-shadow: 0 2px 1px #cccccc;
+      font-size: 20px;
+      text-decoration: none
+    }
+
+    .enter-result > input {
+      width: 40px; height: 40px;
+      border-radius: 3px;
+      font-size: 20px;
+      margin: 4px;
+      color: #666666;
+      font-weight: 600;
+      border: 1px solid #5560BC;
+      padding-left: 9px
+    }
+
+    #dlo > p {
+      margin-bottom: 2px;
+      font-weight: 600;
+      color: #666666;
+      background-color: #eeeeee
+    }
+
+    .left {left:0}
+    .right {right:0}
+    .top {top:0}
+    .bottom {bottom:0}
+
+    .main-place-result > a > div {
+      -webkit-text-shadow: 0 1px 1px #444444;
+      -moz-text-shadow: 0 1px 1px #444444;
+      text-shadow: 0 1px 1px #444444
+    }
+
+    .check-console {
+      width: 16px;
+      height: 16px;
+      border-radius: 50px;
+      background-color: #007ACC;
+      left: 29px
+    }
+
+    .step-one-result > input {
+      width: 28%;
+      height: 35px;
+      padding-left: 5px;
+      color: #555555;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 2px;
+      margin: 2px;
+      border: 1px solid #5560BC;
+    }
+
+    #parentTeachOne > input:hover,
+    #parentTeachTwo > input:hover,
+    #enterResult > input:hover {
+      outline: 1px solid orange
+    }
+
+    .bakground-light:active {
+      -webkit-box-shadow: 0 8px 3px #cccccc;
+      -moz-box-shadow: 0 8px 3px #cccccc;
+      box-shadow: 0 8px 3px #cccccc
+    }
+
+    .toggle-system {
+      width: 45px;
+      height: 45px;
+      background-color: #007ACC;
+      border-radius: 50%;
+      right: 25px;
+      bottom: 20px
+    }
+
+    .toggle-system > input {
+      color: white;
+      background-color: transparent;
+      font-size: 20px;
+      border: none;
+      outline: none
+    }
+
+    .toggle-system:active {
+      -webkit-box-shadow: 0 6px 4px #cccccc;
+      -moz-box-shadow: 0 6px 4px #cccccc;
+      box-shadow: 0 6px 4px #cccccc
+    }
+
+    </style>
+  </head>
+  <body style="background-color:#eeeeee;overflow:hidden;">
+    <!----------------- factory to make array ----------------->
+    <div class="factory-array absolute top center-left">
+      <input type="range" class="range1 absolute pointer center-left" value="2" max="3" min="1" step="1" id="rangePole">
+      <input type="range" class="range2 absolute pointer center-top" value="2" max="3" min="1" step="1" id="rangeRow">
+      <!-------------------------- your buttons to make a modefication in your factory ------------------>
+      <div class="all-edit absolute full-left">
+        <div class="button-edit absolute center-left">
+          <div class="button-create absolute full-top" id="create" title="create a new array">
+            <input type="button" class="absolute center pointer" aria-label="create" role="button" value="&#x02295;">
+          </div>
+          <div class="button-random absolute full-top" id="random" title="create a random array">
+            <input type="button" class="absolute center pointer" aria-label="random" role="button" value="?">
+          </div>
+        </div>
+      </div>
+      <!------------------- place your array in factory ------------------>
+      <div class="factory-arrays absolute center" id="factory">
+      <input type="text" autocapitalize="off" autocomplete="off" value="" data-value="">
+      <input type="text" autocapitalize="off" autocomplete="off" value="" data-value="">
+      <br>
+      <input type="text" autocapitalize="off" autocomplete="off" value="" data-value="">
+      <input type="text" autocapitalize="off" autocomplete="off" value="" data-value="">
+    </div>
+  </div>
+  <!---------------------- this place where you will put your array ----------------->
+  <div class="place-array absolute center-left">
+    <div class="absolute center-left" style="top:-80px;font-weight:600;color:#666" id="showSelector"></div>
+    <!-------------you will show your mark and the script will take it from here ------------------------->
+    <div class="select-operation absolute center pointer" id="selectMark">
+      <a href="#" class="absolute center" role="button" aria-label="select">+</a>
+    </div>
+    <!------------------- your marks in your programming ------------------------->
+    <div class="mark-maths absolute center-left shadow" style="display:none;" id="operation">
+      <div class="opera__1 absolute center-top pointer" id="operaOne">
+        <a href="#" class="absolute center" role="button" title="select mark '-'">-</a><!-- (-) -->
+      </div>
+      <div class="absolute center pointer" id="operaTwo">
+        <a href="#" class="absolute center" role="button" title="select mark '+'">+</a><!-- (+) -->
+      </div>
+      <div class="opera__3 absolute center-top pointer" id="operaThree">
+        <a href="#" class="absolute center" role="button" title="select mark 'x'">x</a><!-- (*) -->
+      </div>
+    </div>
+    <!------------------- your edit in array one and two ------------------>
+    <div class="some-edit-array absolute full-left">
+      <div class="array___1 absolute full-top" id="editOne" style="display:none;">
+        <div class="bakground-light absolute full-top left shadow pointer" id="editArrayOneClose">
+          <a href="#" class="absolute center">x</a>
+        </div>
+        <div class="bakground-light absolute full-top center shadow pointer" id="oppositeArrayOne">
+          <a href="#" class="absolute center">&bigtriangleup;</a>
+        </div>
+        <div class="bakground-light absolute full-top right shadow pointer" id="editArrayOneCircle">
+          <a href="#" class="absolute center">&circlearrowleft;</a>
+        </div>
+      </div>
+      <div class="array___2 absolute full-top" id="editTwo" style="display:none;">
+        <div class="bakground-light absolute full-top left shadow pointer" id="editArrayTwoClose">
+          <a href="#" class="absolute center">x</a>
+        </div>
+        <div class="bakground-light absolute full-top center shadow pointer" id="oppositeArrayTwo">
+          <a href="#" class="absolute center">&bigtriangleup;</a>
+        </div>
+        <div class="bakground-light absolute full-top right shadow pointer" id="editArrayTwoCircle">
+          <a href="#" class="absolute center">&circlearrowleft;</a>
+        </div>
+      </div>
+    </div>
+    <div class="array-main-1 absolute right full-top" id="parentArrayOne">
+      <div class="array1 absolute center" id="arrayOne"></div>
+    </div>
+    <div class="array-main-2 absolute left full-top" id="parentArrayTwo">
+      <div class="array2 absolute center" id="arrayTwo"></div>
+    </div>
+  </div>
+  <!------------------- your main buttons for make toogle and know the result ------------------->
+  <div class="button-operation fixed center-left" id="btnOpera">
+    <input type="button" class="button-plus shadow absolute pointer full-bottom left r3" id="equal" aria-label="equal" role="button" value="&#x0003D;"><!-- {=} -->
+    <input type="button" class="button-toggle shadow absolute pointer full-bottom right r3" id="toggle" aria-label="toggle" role="button" value="&RightArrowLeftArrow;"><!-- {<>} -->
+  </div>
+  <!------------------------------- toggle system------------------------------------->
+  <div class="toggle-system fixed shadow">
+    <input type="button" class="absolute full pointer" id="typeArray" aria-label="select" role="button" value="(&nbsp;)"  style="display:none">
+    <input type="button" class="absolute full pointer" id="typeSelect" aria-label="array" role="button" value="|&nbsp;|">
+  </div>
+  <!------------------------ {console} ---------------------------->
+  <input type="hidden" value="true" id="typeSystem">
+  <div class="place-result fixed full-left" style="bottom:-100%;height:100%;display:none" id="placeResult">
+    <!------------------- head of the console ---------------------->
+    <div class="main-place-result full-left absolute top" id="result">
+      <div class="absolute center-top help" style="left:20px;font-size:20px;font-weight:600;color:#334897" title="console">Console</div><!-- logo -->
+      <div class="absolute center pointer" id="closeWindow" style="width:55%;height:100%;font-size:30px;color:#333;font-weight:700"></div><!-- close -->
+      <div class="absolute center-top pointer" id="allowConsole" style="border-radius:15px;width:47px;height:19px;background-color:white;right:15px">
+        <div class="check-console absolute center-top" id="checkConsole"></div>
+      </div>
+      <!---------------- to storage your selection about show your errors ------------->
+      <input type="hidden" id="inputAllowConsole" value="true">
+    </div>
+    <!--------------------- errors in console ------------------------------>
+    <div class="absolute full-left" style="top:55px;font-size:15px">
+      <div id="placeErrors" style="display:none">
+        <p id="errorOne"></p>
+        <p id="errorTwo"></p>
+      </div>
+    </div>
+    <!------------------- show value of input here when you click on it ----------------------->
+    <p id="showSelectorConsole" style="bottom:20px;left:20px;color:#555555;font-weight:600;font-size:18px" class="absolute"></p>
+    <!----------------------- place step one in console ------------------>
+    <div class="absolute full-left" style="top:55px;height:180px" id="stepTeachOne">
+      <!---------------------- array two --------------------->
+      <div class="absolute full-top left" style="width:49%" id="parentTeachTwo">
+        <div class="step-one-result absolute center" id="arrayTeachTwo"></div>
+      </div>
+      <!--------------------- mark of the operation --------------------->
+      <div class="absolute center">
+        <p style="font-size:25px;color:#555555;font-weight:600" id="markConsole"></p>
+      </div>
+      <!---------------------- array one ------------------------>
+      <div class="absolute full-top right" style="width:49%" id="parentTeachOne">
+        <div class="step-one-result absolute center" id="arrayTeachOne"></div>
+      </div>
+    </div>
+    <!-------------------------- result ----------------------->
+    <div class="enter-result absolute center-left" id="enterResult"></div>
+  </div>
+  <script type="text/javascript">
+
+( function ($) {
+"use strict";
+
+// to give a good height for page
+document.body.style.height = screen.height +5+ "px";
+document.addEventListener("contextmenu", function( event ) {
+  event.preventDefault();
+});
+
+// console
+var consoleProg = $.findById("placeResult").style;
+var closeWindow = $.findById("closeWindow");
+
+// (O==) <=> (==O)
+var allowConsole = $.findById("allowConsole");
+
+var checkConsole = $.findById("checkConsole").style;
+var inputAllowConsole = $.findById("inputAllowConsole");
+
+// step one in console
+var stepTeachOne = $.findById("stepTeachOne");
+var markConsole = $.findById("markConsole");
+
+var placeResult = $.findById("placeResult");
+
+// get if we can show error for user from momery of the device
+( function( showConsole ) {
+
+  inputAllowConsole.value = showConsole;
+  localStorage.setItem("showConsole", showConsole);
+
+  ( showConsole === "false" )?
+    checkConsole.left = "29px":
+    checkConsole.left = "2px";
+
+} )( localStorage.getItem("showConsole") || inputAllowConsole.value );
+
+// to select if we must show errors for user if he make error
+allowConsole.addEventListener("click", function() {
+
+  if ( inputAllowConsole.value === "true" ) {
+    inputAllowConsole.value = "false";
+    localStorage.setItem("showConsole", "false");
+    checkConsole.left = "29px";
+
+  } else {
+    inputAllowConsole.value = "true";
+    localStorage.setItem("showConsole", "true");
+    checkConsole.left = "2px";
+  }
+});
+
+var factory = $.findById("factory");
+var show = {
+  "main": function( string ){
+    $.findById("showSelector").innerHTML = (string || "");
+  },
+
+  "console": function( string ) {
+    $.findById("showSelectorConsole").innerHTML = (string || "");
+  }
+};
+
+
+// func to show error in console if we allow to do that
+function showErrorConsole (lineOne, lineTwo) {
+
+  var placeErrors = $.findById("placeErrors").style;
+  var errorOne = $.findById("errorOne");
+  var errorTwo = $.findById("errorTwo");
+
+  removeResultInputs();
+
+  if ( inputAllowConsole.value === "true" ) {
+    errorOne.innerHTML = "&nbsp;>&nbsp;<span style='color:tomato'>" +lineOne+ "</span>";
+    errorTwo.innerHTML = "&nbsp;>&nbsp;<span style='color:#555555'>" +lineTwo+ "</span>";
+
+    show.console();
+
+    placeErrors.display = "block";
+    consoleProg.bottom = "0px";
+  }
+}
+
+// that func to male hidden for console
+// we can use it in errors or showing the result of operation
+function hideConsole() {
+  consoleProg.bottom = "-" +screen.height+ "px";
+  show.console();
+  setTimeout( function() {
+    consoleProg.display = "none";
+  },90);
+}
+
+// if we click in center of console's head it will hide console
+closeWindow.addEventListener("click", hideConsole);
+
+// get child from parent
+function getChild (parent, child) {
+  return (typeof parent === "string")?
+    $.findById( parent ).getElementsByTagName( child ):
+    parent.getElementsByTagName( child );
+}
+
+var button = {
+  "random": $.findById("random"),
+  "create": $.findById("create"),
+  "array": $.findById("typeArray"),
+  "select": $.findById("typeSelect"),
+  "toggle": $.findById("toggle"),
+  "equal": $.findById("equal")
+};
+
+// places of all array
+var arrayOne = $.findById("arrayOne");
+var arrayTwo = $.findById("arrayTwo");
+
+// edit of array
+var editOne = $.findById("editOne").style;
+var editTwo = $.findById("editTwo").style;
+
+var method = {
+  "arrayOne": {
+    "close": $.findById("editArrayOneClose"),
+    "circle": $.findById("editArrayOneCircle"),
+    "opposite": $.findById("oppositeArrayOne")
+  },
+
+  "arrayTwo": {
+    "close": $.findById("editArrayTwoClose"),
+    "circle": $.findById("editArrayTwoCircle"),
+    "opposite": $.findById("oppositeArrayTwo")
+  }
+};
+
+// =================================================================> clean
+function clearElements (place) {
+  var elements = place.querySelectorAll("*");
+  for (var i = 0; i < elements.length; i++) {
+    place.removeChild( elements[i] );
+  }
+}
+
+var clear = {
+  "factory": function() {
+    clearElements( factory );
+  },
+
+  "arrayOne": function() {
+    editOne.display = "none";
+    clearElements( arrayOne );
+  },
+
+  "arrayTwo": function() {
+    editTwo.display = "none";
+    clearElements( arrayTwo );
+  }
+};
+
+// =================================================================> values
+var set = {
+  "value": function (element, value) {
+    element.setAttribute("value", value );
+    element.value = value;
+  },
+
+  "data": function (element, value) {
+    element.setAttribute("data-value", value );
+  },
+
+  "valueData": function (element, value) {
+    this.value( element, value );
+    this.data( element, value );
+  }
+};
+
+var get = {
+  "value": function (element) {
+    return element.getAttribute("value");
+  },
+
+  "data": function (element) {
+    return element.getAttribute("data-value");
+  }
+};
+
+
+// create elements and but them where you want
+function createElements (place, number, element, attributes) {
+  attributes = attributes || {};
+
+  for (var i = 0; i < number; i++) {
+    var ele = document.createElement( element );
+
+    // extend all attributes from {object}
+    for (var attribute in attributes) {
+      var attr = document.createAttribute( attribute );
+      attr.value = attributes[ attribute ];
+      ele.setAttributeNode( attr );
+    }
+    place.appendChild( ele );
+  }
+}
+
+// func to make a new array in the place which you select
+function addElements (place, pole, row, attributes) {
+  try {
+    if ( pole.nodeType === (Node.ELEMENT_NODE||1) ) {
+      pole = parseInt( pole.value );
+      row = parseInt( row.value );
+    }
+  } catch(e){}
+
+  createElements( place, pole*row, "input", attributes );
+
+  // order the inputs by element `<br>`
+  for (var i = 0; i < row -1; i++) {
+    var ele, inputs;
+
+    ele = document.createElement("br");
+    inputs = getChild( place, "input");
+
+    place.insertBefore( ele, inputs[ (pole*(i+1)) ]);
+  }
+}
+
+//////////////////////////////////////////////////////////////////// button () and ||
+var storageType = $.findById("typeSystem");
+var system = {
+  "toArray": function() {
+    clear.arrayOne();
+    clear.arrayTwo();
+
+    button.array.style.display = "none";
+    button.select.style.display = "block";
+    factory.style.borderRadius = "30px";
+    set.value( storageType, "true" );
+  },
+
+  "toSelect": function() {
+    clear.arrayOne();
+    clear.arrayTwo();
+
+    button.select.style.display = "none";
+    button.array.style.display = "block";
+    factory.style.borderRadius = "0px";
+    set.value( storageType, "false" );
+  }
+};
+
+// to solve problem of refresh the page
+system.toArray();
+
+
+//////////////////////////////////////////////////////////// to change the system
+button.array.addEventListener("click", system.toArray);
+button.select.addEventListener("click", system.toSelect);
+
+
+// to show value the input when you will click on it
+function showValue (elements, place) {
+  var watch = (place || "out");
+  (place === "in")?
+    watch = show.main:
+    watch = show.console;
+
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener("click", function() {
+      watch("value&nbsp;:&nbsp;" + get.value(this));
+    });
+  }
+}
+
+
+///////////////////////////////////////////////// get mark from <html>
+var selectMark = $.findById("selectMark");
+var selectMarkMaths = "+";
+
+function doOperaSelect4 (a) {
+  return (a[1] * a[2]) - (a[0] * a[3]);
+}
+
+function doOperaSelect9 (J) {
+  return (
+     (J[2] * doOperaSelect4([ J[3], J[4], J[6], J[7] ]))
+    -(J[1] * doOperaSelect4([ J[3], J[5], J[6], J[8] ]))
+    +(J[0] * doOperaSelect4([ J[4], J[5], J[7], J[8] ]))
+  );
+}
+
+
+function float (element, num) {
+  return parseFloat( get.data( element[(num||0)] ));
+}
+
+
+
+var attr = {"readonly":"readonly", "class":"pointer", "type":"text", "data-value":"", "value": ""};
+
+////////////////////////////////////////////////////////////////////////////////////// operation
+function doOperationArray (bool) {
+
+  var MARK = selectMarkMaths;
+  var resultOperations = [ [], [] ];
+
+  let elementsArrayOne = getChild( arrayOne, "input");
+  let elementsArrayTwo = getChild( arrayTwo, "input");
+
+  var rowArrayOne = getChild( arrayOne, "br").length +1;
+  var poleArrayOne = elementsArrayOne.length / rowArrayOne;
+
+  var rowArrayTwo = getChild( arrayTwo , "br").length +1;
+  var poleArrayTwo = elementsArrayTwo.length / rowArrayTwo;
+
+  var valueFromArrayOne;
+  var valueFromArrayTwo;
+
+  if (get.value( storageType ) === "true") {
+
+    //do all operation for `( )`
+    if ((MARK === "+") || (MARK === "-")) {
+      if ((poleArrayOne === poleArrayTwo) && (rowArrayOne === rowArrayTwo)) {
+
+        // operation maths of mark `-` and `+`
+        resultOperations[0][0] = poleArrayOne;
+        resultOperations[0][1] = rowArrayOne;
+
+        for (var i = 0; i < elementsArrayOne.length; i++) {
+
+          (MARK === "+")?
+            resultOperations[1][i] = float(elementsArrayOne,i) + float(elementsArrayTwo,i):
+            resultOperations[1][i] = float(elementsArrayOne,i) - float(elementsArrayTwo,i);
+        }
+      }
+
+
+    } else if (MARK === "x") {
+
+      // number to (array || number)
+      if (((poleArrayOne * rowArrayOne) === 1) && (poleArrayTwo * rowArrayTwo > 0)) {
+
+        resultOperations[0][0] = poleArrayTwo;
+        resultOperations[0][1] = rowArrayTwo;
+
+        for (let i = 0; i < elementsArrayTwo.length; i++) {
+          resultOperations[1][i] = float(elementsArrayOne) * float(elementsArrayTwo,i);
+        }
+
+
+      // array to (number)
+      } else if ((elementsArrayTwo.length === 1) && (poleArrayOne*rowArrayOne > 0)) {
+        resultOperations[0][0] = poleArrayOne;
+        resultOperations[0][1] = rowArrayOne;
+
+        for (let i = 0; i < elementsArrayOne.length; i++) {
+          resultOperations[1][i] = float(elementsArrayTwo) * float(elementsArrayOne,i);
+        }
+
+
+      // array to array
+      } else if (elementsArrayOne.length-1 && elementsArrayTwo.length-1) {
+        if (poleArrayOne === rowArrayTwo) {
+
+          resultOperations[0][0] = rowArrayOne; // pole
+          resultOperations[0][1] = poleArrayTwo; // row
+
+          var arrOne = [ [], [], [] ];
+          var arrTwo = [ [], [], [] ];
+
+          var r = rowArrayOne-1;
+          for (var ele = elementsArrayOne.length -1; ele > -1;) {
+            if (arrOne[r].length === poleArrayOne) {
+              r--;
+            } else {
+              arrOne[r].push( float( elementsArrayOne, ele ));
+              ele--;
+            }
+          }
+          //> console.log( arrOne );
+
+          var len = 0;
+          for (var loop1 = 0; loop1 < poleArrayTwo; loop1++) {
+            for (var loop2 = loop1; loop2 < elementsArrayTwo.length;) {
+              if (arrTwo[len].length === rowArrayTwo) {
+                len++;
+              } else {
+                arrTwo[len].push( float( elementsArrayTwo, loop2 ));
+                loop2 += poleArrayTwo;
+              }
+            }
+          }
+          //> console.log( arrTwo );
+
+          for (var lop1 = 0; lop1 < rowArrayOne; lop1++) {
+            for (var lop2 = 0; lop2 < poleArrayTwo; lop2++) {
+              var result = 0;
+              for (var lop3 = 0; lop3 < poleArrayOne; lop3++) {
+                result = (arrOne[ lop1 ][ lop3 ] * arrTwo[ lop2 ][ lop3 ]) + result;
+              }
+              resultOperations[1].push( result );
+            }
+          }
+        }
+      }
+    }
+  } else {
+    var arrOfArrayOne = [];
+    var arrOfArrayTwo = [];
+
+    // do all operation for `||`
+    if ((MARK === "+") || (MARK === "-") || (MARK === "x")) {
+
+      resultOperations[0][0] = 1;
+      resultOperations[0][1] = 1;
+
+      for (var key1 = 0; key1 < elementsArrayOne.length; key1++){
+        arrOfArrayOne.push( float( elementsArrayOne, key1 ));
+      }
+
+      for (var key2 = 0; key2 < elementsArrayTwo.length; key2++){
+        arrOfArrayTwo.push( float( elementsArrayTwo, key2 ));
+      }
+
+
+      (elementsArrayOne.length === 4)?
+        valueFromArrayOne = doOperaSelect4( arrOfArrayOne ):
+
+        (elementsArrayOne.length === 1)?
+          valueFromArrayOne = float(elementsArrayOne):
+          valueFromArrayOne = doOperaSelect9( arrOfArrayOne );
+
+      (elementsArrayTwo.length === 4)?
+        valueFromArrayTwo = doOperaSelect4( arrOfArrayTwo ):
+
+        (elementsArrayTwo.length === 1)?
+          valueFromArrayTwo = float(elementsArrayTwo):
+          valueFromArrayTwo = doOperaSelect9( arrOfArrayTwo );
+
+
+      if (elementsArrayOne.length && elementsArrayTwo.length) {
+        (MARK === "+")?
+          resultOperations[1][0] = valueFromArrayOne + valueFromArrayTwo:
+
+        (MARK === "-")?
+          resultOperations[1][0] = valueFromArrayOne - valueFromArrayTwo:
+          resultOperations[1][0] = valueFromArrayOne * valueFromArrayTwo;
+
+      } else if (elementsArrayOne.length) {
+        resultOperations[1][0] = valueFromArrayOne;
+        MARK = "";
+
+      } else if (elementsArrayTwo.length) {
+        resultOperations[1][0] = valueFromArrayTwo;
+        MARK = "";
+      }
+    }
+  }
+
+  // if you want show the result in array one
+  if (!bool) {
+
+    clear.arrayOne();
+    clear.arrayTwo();
+
+    // show value array number one
+    addElements( arrayOne, resultOperations[0][0], resultOperations[0][1], attr );
+    var inputs = getChild( arrayOne, "input");
+
+    for (var i = 0; i < resultOperations[1].length; i++) {
+      set.valueData( inputs[i], resultOperations[1][i] );
+    }
+
+    showValue( inputs, "in" );
+    editOne.display = "block";
+
+
+    // if you want show the result in array console
+  } else if (resultOperations[1].length) {
+    removeResultInputs();
+    markConsole.innerHTML = MARK;
+
+
+    // copy all values from array one to array one in console
+    var arrayTeachOne = $.findById("arrayTeachOne");
+    var inputsTeachOne = getChild( arrayTeachOne, "input");
+
+    addElements( arrayTeachOne, poleArrayOne, rowArrayOne, attr );
+
+    for (var e = 0; e < elementsArrayOne.length; e++) {
+      set.value( inputsTeachOne[e], get.value( elementsArrayOne[e] ));
+    }
+
+
+    // copy all values from array two to array two in console
+    var arrayTeachTwo = $.findById("arrayTeachTwo");
+    var inputsTeachTwo = getChild( arrayTeachTwo, "input");
+
+    addElements( arrayTeachTwo, poleArrayTwo, rowArrayTwo, attr );
+
+    for (var v = 0; v < elementsArrayTwo.length; v++) {
+      set.value( inputsTeachTwo[v], get.value( elementsArrayTwo[v] ));
+    }
+
+
+
+    // put results in console
+    var enterResult = $.findById("enterResult");
+    var inputsArrayResult = getChild( enterResult, "input");
+
+    addElements( enterResult, resultOperations[0][0], resultOperations[0][1], attr );
+
+    for (var i = 0; i < resultOperations[1].length; i++) {
+      set.value( inputsArrayResult[i], resultOperations[1][i] );
+    }
+
+
+    // add event click to show value all input
+    showValue( inputsTeachOne ); // array one
+    showValue( inputsTeachTwo ); // array two
+    showValue( inputsArrayResult ); // array result
+
+    // then show console with all operation
+    placeResult.style.display = "block";
+    setTimeout( function() {
+      placeResult.style.bottom = "0px";
+    },50);
+    
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////// create array from factory
+function createArray() {
+  var inputFactory = getChild( factory, "input");
+
+  var rowFactory = getChild( factory, "br").length +1;
+  var polFactory = inputFactory.length / rowFactory;
+
+  var arraysInputFactory = [];
+
+  for ( var i = 0; i < inputFactory.length; i ++ ) {
+    arraysInputFactory.push( inputFactory[i].value );
+  }
+
+  var onlyNumbers = true;
+  for (var num in arraysInputFactory) {
+    onlyNumbers = onlyNumbers && !isNaN( arraysInputFactory[num] );
+  }
+
+  let elementsArrayOne = getChild( arrayOne, "input");
+  let elementsArrayTwo = getChild( arrayTwo, "input");
+
+  var rowArrayOne = getChild( arrayOne, "br").length +1;
+  var poleArrayOne = elementsArrayOne.length / rowArrayOne;
+
+  var rowArrayTwo = getChild( arrayTwo , "br").length +1;
+  var poleArrayTwo = elementsArrayTwo.length / rowArrayTwo;
+
+  // create array if factory isn't empty and has only numbers
+  if (!(arraysInputFactory.indexOf("") !== -1) && onlyNumbers) {
+
+    //////////////////// function to move array from factory to a new place
+    function moveToArray (name, edit) {
+      edit.display = "block";
+      addElements( name, rangePole, rangeRow, attr );
+
+      var inputs = getChild( name, "input");
+      showValue( inputs, "in" );
+
+      for (var i = 0; i < inputs.length; i++) {
+        var input = arraysInputFactory[i];
+
+        set.value( inputs[i], input );
+        set.data( inputs[i], input );
+      }
+    }
+
+    //:- this function to take all element <input> and put it in array number one
+    function moveToArrayOne() {
+      moveToArray( arrayOne, editOne );
+    }
+
+    //:- this function to take all element <input> and put it in array number two
+    function moveToArrayTwo() {
+      moveToArray( arrayTwo, editTwo );
+    }
+
+    function moveToArrayTwoWithOperation() {
+      doOperationArray( false );
+      moveToArrayTwo();
+    }
+
+    if (!arrayOne.children.length || !arrayOne.childElementCount) {
+      if (get.value( storageType ) === "false") {
+        if ((rowFactory/polFactory) === 1) {
+          moveToArrayOne();
+        }
+      } else {
+        moveToArrayOne();
+      }
+    } else if (!arrayTwo.children.length || !arrayTwo.childElementCount) {
+      if (get.value( storageType ) === "false") {
+        if ((rowFactory/polFactory) === 1) {
+          moveToArrayTwo();
+        }
+      } else {
+        moveToArrayTwo();
+      }
+    } else if (get.value( storageType ) === "true") {
+      if ((selectMarkMaths === "+") || (selectMarkMaths === "-")) {
+        if ((poleArrayOne === poleArrayTwo) && (rowArrayOne === rowArrayTwo)) {
+          moveToArrayTwoWithOperation();
+        }
+      } else if (rowArrayOne === poleArrayTwo) {
+        moveToArrayTwoWithOperation();
+      }
+    } else if (get.value( storageType ) === "false") {
+      if (((rowArrayOne/poleArrayOne) === 1) && ((rowArrayTwo/poleArrayTwo) === 1)) {
+        moveToArrayTwoWithOperation();
+      }
+    }
+  }
+}
+
+
+var rangePole = $.findById("rangePole");
+var rangeRow = $.findById("rangeRow");
+
+// to return input for default when you make refresh for browser
+// sometime it will be in firefox
+( function() {
+  set.valueData( rangePole, 2);
+  set.valueData( rangeRow, 2);
+})();
+
+// add event `keyPress` for all inputs in factory
+function eventInputsFactory() {
+  var inputsFactory = getChild( factory, "input");
+  for (var i = 0; i < inputsFactory.length; i++) {
+    inputsFactory[i].addEventListener("keypress", createArray);
+  }
+}
+
+// add event if you make refresh form the page
+eventInputsFactory();
+
+rangePole.addEventListener("input", function() {
+  clear.factory();
+  addElements( factory, rangePole, rangeRow ,{
+    "autocapitalize": "off",
+    "autocomplete": "off",
+    "type": "text",
+    "data-value": "",
+    "value": ""
+  });
+  set.valueData( rangePole, this.value );
+  eventInputsFactory();
+});
+
+rangeRow.addEventListener("input", function() {
+  clear.factory();
+  addElements( factory, rangePole, rangeRow ,{
+    "autocapitalize": "off",
+    "autocomplete": "off",
+    "type": "text",
+    "data-value": "",
+    "value": ""
+  });
+  set.valueData( rangeRow, this.value );
+  eventInputsFactory();
+});
+
+
+////////////////////////////////////////////////////////////// mark
+function displayMarksMaths() {
+  var opera = $.findById("operation").style;
+  opera.display === "none"?
+  opera.display = "block":
+  opera.display = "none";
+}
+
+function copyMarkFactory (element) {
+  element = $.findById( element );
+  element.addEventListener("click", function() {
+    var markText = getChild( element, "a")[0].innerHTML;
+    getChild( selectMark, "a")[0].innerHTML = markText;
+    selectMarkMaths = markText;
+    displayMarksMaths();
+  });
+}
+
+// func to get the mark if you select it
+copyMarkFactory("operaOne");
+copyMarkFactory("operaTwo")
+copyMarkFactory("operaThree");
+
+// hide mark of return to click on `selectMakrk`
+selectMark.addEventListener("click", displayMarksMaths);
+
+function removeResultInputs() {
+  markConsole.innerHTML = "";
+
+  var parentTechOne = $.findById("parentTeachOne");
+  var parentTechTwo = $.findById("parentTeachTwo");
+
+  parentTechOne.removeChild( $.findById("arrayTeachOne") );
+  parentTechTwo.removeChild( $.findById("arrayTeachTwo") );
+
+  var style = "step-one-result absolute center pointer";
+
+  createElements( parentTechOne, 1,"div",{
+    "id": "arrayTeachOne",
+    "class": style
+  });
+
+  createElements( parentTechTwo, 1,"div",{
+    "id": "arrayTeachTwo",
+    "class": style
+  });
+
+  placeResult.removeChild( $.findById("enterResult") );
+  createElements( placeResult, 1, "div",{
+    "id": "enterResult",
+    "class": "enter-result absolute center-left"
+  });
+}
+
+
+///////////////////////////////////////////////////////////////////////////////// method
+function oppositeArray() {
+  var array, edit, inputs, sel, arr, pol, row;
+
+  array = arrayOne;
+  edit = editOne;
+
+  if (this === method.arrayTwo.opposite) {
+    array = arrayTwo;
+    edit = editTwo;
+  }
+
+  inputs = getChild( array, "input");
+  sel = [];
+  arr = [];
+
+  for (var i = 0; i < inputs.length; i++) {
+      sel[i] = float(inputs,i);
+  }
+
+  row = getChild( array, "br").length +1;
+  pol = inputs.length / row;
+
+  if (row === pol) {
+    if ((row === 2) && (pol == 2)) {
+      try {
+        arr[0] = 0 - float(inputs);
+        arr[1] = float(inputs,2);
+        arr[2] = float(inputs,1);
+        arr[3] = 0 - float(inputs,3);
+
+        (this === method.arrayOne.opposite)?
+          clear.arrayOne():
+          clear.arrayTwo();
+
+        edit.display = "block";
+        addElements( array, 2, 2, attr );
+
+        inputs = getChild( array, "input");
+        showValue( inputs, "in" );
+
+        var res, num, result, show;
+
+        res = doOperaSelect4(sel);
+        num = 1/res;
+
+        for (var r = 0; r < 5; r ++) {
+
+          result = num*arr[r];
+          show = arr[r]+"/"+res;
+
+          if (result === 0) {
+            show = 0;
+
+          } else if (result === parseInt(result)) {
+              show = result;
+
+          } else if ((res/arr[r]) === parseInt(res/arr[r]) ) {
+            if ((res/arr[r])<0) {
+              show = "-1/"+ (res/arr[r])*-1;
+            } else {
+              show = "1/"+ (res/arr[r]);
+            }
+          } else if (((arr[r]<0) && (res<0)) || (res<0)) {
+              show = arr[r]*-1 +"/"+ res*-1;
+          }
+
+          set.value( inputs[r], show );
+          set.data( inputs[r], result );
+        }
+      } catch(e) {
+        //
+      }
+    }
+  }
+};
+
+function clearArray() {
+  if (this === method.arrayOne.close) {
+    editOne.display = "none";
+    clear.arrayOne();
+  } else {
+    editTwo.display = "none";
+    clear.arrayTwo();
+  }
+}
+
+function circleArray() {
+  var placeEdit, innerPlace, getInput;
+
+  placeEdit = arrayOne;
+  innerPlace = $.findById("parentArrayOne");
+
+  if (this === method.arrayTwo.circle) {
+    placeEdit = arrayTwo;
+    innerPlace = $.findById("parentArrayTwo");
+  }
+
+  getInput = getChild( placeEdit, "input");
+
+  if ((getInput.length !== 1) && (getInput.length !== 0)) {
+    innerPlace.style.transform = "rotateY(90deg)rotate(90deg)";
+
+    setTimeout( function() {
+      innerPlace.style.transform = "rotateY(0)rotate(0)";
+    },300);
+
+    var valueAfterCirlce = [ [], [] ],
+        i, i1, i2;
+
+    var infoRow = getChild( placeEdit, "br").length +1;
+    var infoPole = getInput.length / infoRow;
+
+    for (i1 = 1; i1 <= infoPole; i1++) {
+      for (i2 = getInput.length - i1; i2 > -1; i2 -= infoPole) {
+        valueAfterCirlce[0].push( get.value( getInput[i2] ));
+        valueAfterCirlce[1].push( get.data( getInput[i2] ));
+      }
+    }
+
+    if (this === method.arrayOne.circle) {
+      clear.arrayOne();
+      editOne.display = "block";
+    } else {
+      clear.arrayTwo();
+      editTwo.display = "block";
+    }
+
+    addElements( placeEdit, infoRow, infoPole, attr );
+    var inputsArrayCircle = getChild( placeEdit, "input");
+
+    for (i = 0; i < (infoPole*infoRow); i++) {
+      set.value( inputsArrayCircle[i], valueAfterCirlce[0][i] );
+      set.data( inputsArrayCircle[i], valueAfterCirlce[1][i] );
+    }
+
+    showValue( inputsArrayCircle, "in" );
+  }
+}
+
+// add event click for tools of arrays
+method.arrayOne.close.addEventListener("click", clearArray);
+method.arrayOne.opposite.addEventListener("click", oppositeArray);
+method.arrayOne.circle.addEventListener("click", circleArray);
+
+method.arrayTwo.close.addEventListener("click", clearArray);
+method.arrayTwo.opposite.addEventListener("click", oppositeArray);
+method.arrayTwo.circle.addEventListener("click", circleArray);
+
+//===========================================================================> create
+button.create.addEventListener("click", createArray);
+
+//===========================================================================> random
+button.random.addEventListener("click", function() {
+  var inputs = getChild( factory, "input");
+
+  for (var i = 0; i < inputs.length; i++) {
+    var num;
+
+    ((Math.random()*10)<2)?
+      num = Math.floor((Math.random()*10)-10):
+
+    ((Math.random()*10)<4)?
+      num = Math.floor((Math.random()*12)-4):
+      num = Math.floor(Math.random()*10);
+
+    set.valueData( inputs[i], num );
+  }
+});
+
+// make animation
+button.toggle.addEventListener("touchstart", function() {
+  parentArrayOne.style.right = "15px";
+  parentArrayTwo.style.left = "15px";
+});
+
+button.toggle.addEventListener("touchend", function() {
+  parentArrayOne.style.right = "0";
+  parentArrayTwo.style.left = "0";
+});
+
+//===========================================================================> toggle
+button.toggle.addEventListener("click", function() {
+
+  var infoOne = [ [], [], [] ];
+  var infoTwo = [ [], [], [] ];
+
+  let elementsArrayOne = getChild( arrayOne, "input");
+  let elementsArrayTwo = getChild( arrayTwo, "input");
+
+  if ((elementsArrayOne.length != 0) || (elementsArrayTwo.length != 0))  {
+
+    // pole and row array one
+    infoOne[0][1] = getChild( arrayOne, "br").length +1;
+    infoOne[0][0] = elementsArrayOne.length / infoOne[0][1];
+
+    // pole and row array two
+    infoTwo[0][1] = getChild( arrayTwo, "br").length +1;
+    infoTwo[0][0] = elementsArrayTwo.length / infoTwo[0][1];
+
+    // copy array one in array[]
+    for (var k = 0; k < elementsArrayOne.length; k++) {
+      let ele = elementsArrayOne[k];
+      infoOne[1].push( get.value( ele ));
+      infoOne[2].push( get.data( ele ));
+    }
+
+    // copy array two in array[]
+    for (var v = 0; v < elementsArrayTwo.length; v++) {
+      let ele = elementsArrayTwo[v];
+      infoTwo[1].push( get.value( ele ));
+      infoTwo[2].push( get.data( ele ));
+    }
+
+    clear.arrayOne();
+    clear.arrayTwo();
+
+    // move in array one
+    addElements( arrayOne, infoTwo[0][0], infoTwo[0][1], attr );
+    elementsArrayOne = getChild( arrayOne, "input");
+
+    for (var i = 0; i < elementsArrayOne.length; i++) {
+      let ele = elementsArrayOne[i];
+      set.value( ele, infoTwo[1][i] );
+      set.data( ele, infoTwo[2][i] );
+    }
+
+    // move in array two
+    addElements( arrayTwo, infoOne[0][0], infoOne[0][1], attr );
+    elementsArrayTwo = getChild( arrayTwo, "input");
+
+    for (var j = 0; j < elementsArrayTwo.length; j++) {
+      let ele = elementsArrayTwo[j];
+      set.value( ele, infoOne[1][j] );
+      set.data( ele, infoOne[2][j] );
+    }
+
+    showValue( elementsArrayOne, "in" );
+    showValue( elementsArrayTwo, "in" );
+
+    // show edit of array one if we find it
+    if (elementsArrayOne.length > 0) {
+      editOne.display = "block";
+    }
+
+    // show edit of array two if you we find it
+    if (elementsArrayTwo.length > 0) {
+      editTwo.display = "block";
+    }
+  }
+});
+
+//===========================================================================> equal
+button.equal.addEventListener("click", doOperationArray);
+
+})({
+  "findById": function( object ) {
+    return document.getElementById( object ) || document.querySelector("#" + object ) || this[ object ];
+  }
+});
+
+    </script>
+  </body>
+</html>
